@@ -36,7 +36,7 @@ page = st.sidebar.radio(
 
 if page == "🏠 Home":
 
-   st.markdown("""
+st.markdown("""
 # ☀️ SunSmart AI
 
 ### Intelligent Solar Recommendation Platform
@@ -45,8 +45,7 @@ if page == "🏠 Home":
 st.subheader(
         "Helping homeowners and businesses choose the right solar system using AI."
 )
-
-    st.markdown("---")
+st.markdown("---")
 
     c1, c2, c3, c4 = st.columns(4)
 
@@ -55,28 +54,28 @@ st.subheader(
     c3.metric("Accuracy", "96%")
     c4.metric("ROI", "3.9 Years")
 
-    st.markdown("---")
+st.markdown("---")
 
-    st.header("Why Choose Solar?")
+st.header("Why Choose Solar?")
 
-    st.success("💰 Reduce Electricity Bills")
+st.success("💰 Reduce Electricity Bills")
 
-    st.success("🌞 Government Subsidy Available")
+st.success("🌞 Government Subsidy Available")
 
-    st.success("🌱 Eco-Friendly Energy")
+st.success("🌱 Eco-Friendly Energy")
 
-    st.success("📈 Long-Term Savings")
+st.success("📈 Long-Term Savings")
 
-    st.markdown("---")
+st.markdown("---")
 
-    st.info(
+st.info(
         "Use the Solar Calculator from the sidebar to get your personalised recommendation."
     )
 
 # ---------------- SOLAR CALCULATOR ----------------
 
 elif page == "☀️ Solar Calculator":
-      st.title("☀️ Solar Calculator")
+st.title("☀️ Solar Calculator")
 
     customer = st.text_input("Customer Name")
 
@@ -123,9 +122,9 @@ elif page == "☀️ Solar Calculator":
     result
         )
 
-        st.session_state["result"] = result
+st.session_state["result"] = result
 
-        st.success("✅ Recommendation Generated Successfully")
+st.success("✅ Recommendation Generated Successfully")
 
         c1, c2, c3 = st.columns(3)
 
@@ -133,27 +132,27 @@ elif page == "☀️ Solar Calculator":
         c2.metric("Panels", result["panels"])
         c3.metric("Payback", f"{result['payback']} Years")
 
-        st.markdown("---")
+st.markdown("---")
 
-        st.write("### Recommendation")
+st.write("### Recommendation")
 
-        st.write(f"Installation Cost : ₹{result['installation_cost']:,}")
+st.write(f"Installation Cost : ₹{result['installation_cost']:,}")
 
-        st.write(f"Government Subsidy : ₹{result['subsidy']:,}")
+st.write(f"Government Subsidy : ₹{result['subsidy']:,}")
 
-        st.write(f"Final Cost : ₹{result['final_cost']:,}")
+st.write(f"Final Cost : ₹{result['final_cost']:,}")
 
-        st.write(f"Monthly Generation : {result['monthly_generation']} Units")
+st.write(f"Monthly Generation : {result['monthly_generation']} Units")
 
-        st.write(f"Monthly Savings : ₹{result['monthly_savings']:,}")
+st.write(f"Monthly Savings : ₹{result['monthly_savings']:,}")
 
-        st.write(f"Yearly Savings : ₹{result['yearly_savings']:,}")
+st.write(f"Yearly Savings : ₹{result['yearly_savings']:,}")
 
         pdf_path = generate_pdf(customer, mobile, city, result)
 
         with open(pdf_path, "rb") as file:
 
-            st.download_button(
+st.download_button(
                 label="📄 Download Proposal PDF",
                 data=file,
                 file_name="Solar_Proposal.pdf",
@@ -162,18 +161,16 @@ elif page == "☀️ Solar Calculator":
 
         if roof >= result["roof_required"]:
 
-            st.success("✅ Roof Area is Sufficient")
+st.success("✅ Roof Area is Sufficient")
 
         else:
-
-            st.error(
+st.error(
                 f"❌ Minimum Roof Required: {result['roof_required']} sq.ft"
             )
             elif page == "🤖 AI Assistant":
+st.title("🤖 SunSmart AI Assistant")
 
-    st.title("🤖 SunSmart AI Assistant")
-
-    st.write("Ask anything about Solar Energy.")
+st.write("Ask anything about Solar Energy.")
 
     question = st.text_area(
         "Ask your question"
@@ -187,16 +184,16 @@ elif page == "☀️ Solar Calculator":
 
                 answer = ask_ai(question)
 
-            st.success(answer)
+st.success(answer)
 
 # ---------------- DASHBOARD ----------------
 
 elif page == "📊 Dashboard":
-      st.title("📊 Solar Dashboard")
+st.title("📊 Solar Dashboard")
 
     if "result" not in st.session_state:
 
-        st.warning("⚠️ Please calculate a recommendation first from the Solar Calculator.")
+st.warning("⚠️ Please calculate a recommendation first from the Solar Calculator.")
 
     else:
 
@@ -208,7 +205,7 @@ elif page == "📊 Dashboard":
         col2.metric("Panels", result["panels"])
         col3.metric("Payback", f"{result['payback']} Years")
 
-        st.markdown("---")
+st.markdown("---")
 
         cost = pd.DataFrame({
 
@@ -234,7 +231,7 @@ elif page == "📊 Dashboard":
             title="Cost Analysis"
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True)
 
         savings = pd.DataFrame({
 
@@ -257,19 +254,19 @@ elif page == "📊 Dashboard":
             title="Savings Distribution"
         )
 
-        st.plotly_chart(fig2, use_container_width=True)
+st.plotly_chart(fig2, use_container_width=True)
 
 # ---------------- ABOUT ----------------
 
 else:
 
-    st.title("About")
+st.title("About")
 
-    st.subheader("AI Solar Sales Assistant")
+st.subheader("AI Solar Sales Assistant")
 
-    st.write("Developed by Padmaja Amberkar")
+st.write("Developed by Padmaja Amberkar")
 
-    st.write("Built using Python, Streamlit, Plotly and ReportLab")
+st.write("Built using Python, Streamlit, Plotly and ReportLab")
 
-    st.info("Version 1.0")
+st.info("Version 1.0")
 
