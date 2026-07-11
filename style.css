@@ -1,0 +1,39 @@
+
+.main{
+    background-color:#F8FAFC;
+}
+
+h1{
+    color:#0A2647;
+    font-weight:bold;
+}
+
+h2{
+    color:#0A2647;
+}
+
+.stButton>button{
+    background:#FFC107;
+    color:black;
+    border-radius:10px;
+    border:none;
+    height:50px;
+    width:100%;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.stButton>button:hover{
+    background:#ffb300;
+}
+
+[data-testid="stMetric"]{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0px 3px 10px rgba(0,0,0,0.15);
+}
+
+div.block-container{
+    padding-top:2rem;
+}
