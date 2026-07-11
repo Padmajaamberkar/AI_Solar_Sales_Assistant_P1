@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 from calculator import SolarCalculator
-from ai_chat import AIChat
+from ai_chat import ask_ai
 from pdf_generator import PDFGenerator
 from database import Database
 
