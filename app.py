@@ -1,3 +1,4 @@
+import streamlit as st
 from groq import Groq
 
 st.write("Secret exists:", "GROQ_API_KEY" in st.secrets)
@@ -11,7 +12,6 @@ try:
     st.success("✅ Groq API is working!")
 except Exception as e:
     st.error(e)
-import streamlit as st
 import pandas as pd
 import plotly.express as px
 
