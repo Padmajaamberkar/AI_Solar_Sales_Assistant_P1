@@ -115,7 +115,7 @@ Example:
 
 **Padmaja Amberkar**
 
-BSc Data Science Student
+Data Science Student
 
 ## ⭐ Project Purpose
 
