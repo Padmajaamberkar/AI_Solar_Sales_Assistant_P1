@@ -5,7 +5,7 @@ import plotly.express as px
 from calculator import SolarCalculator
 from ai_chat import ask_ai
 from pdf_generator import generate_pdf
-from database import Database
+from database import save_customer
 
 
 # Page Config
