@@ -1,3 +1,16 @@
+from groq import Groq
+
+st.write("Secret exists:", "GROQ_API_KEY" in st.secrets)
+
+try:
+    client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content": "Hello"}],
+    )
+    st.success("✅ Groq API is working!")
+except Exception as e:
+    st.error(e)
 import streamlit as st
 import pandas as pd
 import plotly.express as px
