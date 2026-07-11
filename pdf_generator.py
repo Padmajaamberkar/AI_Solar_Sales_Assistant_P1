@@ -1,9 +1,11 @@
-
+import os
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 
 def generate_pdf(customer, mobile, city, result):
+os.makedirs("reports", exist_ok=True)
 
+file_name = os.path.join("reports", "Solar_Proposal.pdf")
     file_name = "reports/Solar_Proposal.pdf"
 
     doc = SimpleDocTemplate(file_name)
