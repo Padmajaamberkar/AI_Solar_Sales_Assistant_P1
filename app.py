@@ -42,9 +42,9 @@ if page == "🏠 Home":
 ### Intelligent Solar Recommendation Platform
 """)
 
-    st.subheader(
+st.subheader(
         "Helping homeowners and businesses choose the right solar system using AI."
-    )
+)
 
     st.markdown("---")
 
