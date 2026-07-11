@@ -1,7 +1,4 @@
-
 import streamlit as st
-with open("assets/style.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 import pandas as pd
 import plotly.express as px
 
@@ -10,42 +7,59 @@ from utils.pdf_generator import generate_pdf
 from utils.database import save_customer
 from utils.ai_chat import ask_ai
 
+
+# Page Config
 st.set_page_config(
     page_title="AI Solar Sales Assistant",
     page_icon="☀️",
     layout="wide"
 )
 
+
+# Load CSS
+try:
+    with open("assets/style.css") as f:
+        st.markdown(
+            f"<style>{f.read()}</style>",
+            unsafe_allow_html=True
+        )
+except:
+    pass
+
+
 calculator = SolarCalculator()
 
+
+# Sidebar
 st.sidebar.title("☀️ AI Solar Sales Assistant")
 
 page = st.sidebar.radio(
     "Navigation",
-       [
-    "🏠 Home",
-    "☀️ Solar Calculator",
-    "🤖 AI Assistant",
-    "📊 Dashboard",
-    "ℹ️ About"
-]
-    
+    [
+        "🏠 Home",
+        "☀️ Solar Calculator",
+        "🤖 AI Assistant",
+        "📊 Dashboard",
+        "ℹ️ About"
+    ]
 )
+
 
 # ---------------- HOME PAGE ----------------
 
 if page == "🏠 Home":
 
     st.markdown("""
-# ☀️ SunSmart AI
+    # ☀️ SunSmart AI
 
-### Intelligent Solar Recommendation Platform
-""")
+    ### Intelligent Solar Recommendation Platform
+    """)
 
-st.subheader(
+    st.subheader(
         "Helping homeowners and businesses choose the right solar system using AI."
-)
-st.markdown("---")
+    )
+
+    st.markdown("---")
 
     c1, c2, c3, c4 = st.columns(4)
 
@@ -54,35 +68,31 @@ st.markdown("---")
     c3.metric("Accuracy", "96%")
     c4.metric("ROI", "3.9 Years")
 
-st.markdown("---")
+    st.markdown("---")
 
-st.header("Why Choose Solar?")
+    st.header("Why Choose Solar?")
 
-st.success("💰 Reduce Electricity Bills")
+    st.success("💰 Reduce Electricity Bills")
+    st.success("🌞 Government Subsidy Available")
+    st.success("🌱 Eco-Friendly Energy")
+    st.success("📈 Long-Term Savings")
 
-st.success("🌞 Government Subsidy Available")
+    st.markdown("---")
 
-st.success("🌱 Eco-Friendly Energy")
-
-st.success("📈 Long-Term Savings")
-
-st.markdown("---")
-
-st.info(
+    st.info(
         "Use the Solar Calculator from the sidebar to get your personalised recommendation."
     )
+
 
 # ---------------- SOLAR CALCULATOR ----------------
 
 elif page == "☀️ Solar Calculator":
-st.title("☀️ Solar Calculator")
+
+    st.title("☀️ Solar Calculator")
 
     customer = st.text_input("Customer Name")
-
     mobile = st.text_input("Mobile Number")
-
     email = st.text_input("Email Address")
-
     city = st.text_input("City")
 
     property_type = st.selectbox(
@@ -109,72 +119,132 @@ st.title("☀️ Solar Calculator")
         step=10
     )
 
+
     if st.button("Calculate Recommendation"):
 
-        result = calculator.calculate(bill, roof)
-        save_customer(
-    customer,
-    mobile,
-    email,
-    city,
-    bill,
-    roof,
-    result
+        result = calculator.calculate(
+            bill,
+            roof
         )
 
-st.session_state["result"] = result
+        save_customer(
+            customer,
+            mobile,
+            email,
+            city,
+            bill,
+            roof,
+            result
+        )
 
-st.success("✅ Recommendation Generated Successfully")
+
+        st.session_state["result"] = result
+        st.session_state["customer"] = customer
+        st.session_state["mobile"] = mobile
+        st.session_state["city"] = city
+
+
+        st.success(
+            "✅ Recommendation Generated Successfully"
+        )
+
 
         c1, c2, c3 = st.columns(3)
 
-        c1.metric("System Size", f"{result['system_kw']} kW")
-        c2.metric("Panels", result["panels"])
-        c3.metric("Payback", f"{result['payback']} Years")
+        c1.metric(
+            "System Size",
+            f"{result['system_kw']} kW"
+        )
 
-st.markdown("---")
+        c2.metric(
+            "Panels",
+            result["panels"]
+        )
 
-st.write("### Recommendation")
+        c3.metric(
+            "Payback",
+            f"{result['payback']} Years"
+        )
 
-st.write(f"Installation Cost : ₹{result['installation_cost']:,}")
 
-st.write(f"Government Subsidy : ₹{result['subsidy']:,}")
+        st.markdown("---")
 
-st.write(f"Final Cost : ₹{result['final_cost']:,}")
+        st.subheader("Recommendation")
 
-st.write(f"Monthly Generation : {result['monthly_generation']} Units")
+        st.write(
+            f"Installation Cost : ₹{result['installation_cost']:,}"
+        )
 
-st.write(f"Monthly Savings : ₹{result['monthly_savings']:,}")
+        st.write(
+            f"Government Subsidy : ₹{result['subsidy']:,}"
+        )
 
-st.write(f"Yearly Savings : ₹{result['yearly_savings']:,}")
+        st.write(
+            f"Final Cost : ₹{result['final_cost']:,}"
+        )
 
-        pdf_path = generate_pdf(customer, mobile, city, result)
+        st.write(
+            f"Monthly Generation : {result['monthly_generation']} Units"
+        )
+
+        st.write(
+            f"Monthly Savings : ₹{result['monthly_savings']:,}"
+        )
+
+        st.write(
+            f"Yearly Savings : ₹{result['yearly_savings']:,}"
+        )
+
+
+        pdf_path = generate_pdf(
+            customer,
+            mobile,
+            city,
+            result
+        )
+
 
         with open(pdf_path, "rb") as file:
 
-st.download_button(
+            st.download_button(
                 label="📄 Download Proposal PDF",
                 data=file,
                 file_name="Solar_Proposal.pdf",
                 mime="application/pdf"
             )
 
+
         if roof >= result["roof_required"]:
 
-            st.success("✅ Roof Area is Sufficient")
+            st.success(
+                "✅ Roof Area is Sufficient"
+            )
 
         else:
-st.error(
+
+            st.error(
                 f"❌ Minimum Roof Required: {result['roof_required']} sq.ft"
             )
-            elif page == "🤖 AI Assistant":
-st.title("🤖 SunSmart AI Assistant")
 
-st.write("Ask anything about Solar Energy.")
+
+
+# ---------------- AI ASSISTANT ----------------
+
+elif page == "🤖 AI Assistant":
+
+    st.title(
+        "🤖 SunSmart AI Assistant"
+    )
+
+    st.write(
+        "Ask anything about Solar Energy."
+    )
+
 
     question = st.text_area(
         "Ask your question"
     )
+
 
     if st.button("Ask AI"):
 
@@ -184,44 +254,76 @@ st.write("Ask anything about Solar Energy.")
 
                 answer = ask_ai(question)
 
-st.success(answer)
+            st.success(answer)
+
+        else:
+
+            st.warning(
+                "Please enter a question."
+            )
+
+
 
 # ---------------- DASHBOARD ----------------
 
 elif page == "📊 Dashboard":
-st.title("📊 Solar Dashboard")
+
+    st.title(
+        "📊 Solar Dashboard"
+    )
+
 
     if "result" not in st.session_state:
 
-         st.warning("⚠️ Please calculate a recommendation first from the Solar Calculator.")
+        st.warning(
+            "⚠️ Please calculate a recommendation first from Solar Calculator."
+        )
+
 
     else:
 
         result = st.session_state["result"]
 
+
         col1, col2, col3 = st.columns(3)
 
-        col1.metric("System Size", f"{result['system_kw']} kW")
-        col2.metric("Panels", result["panels"])
-        col3.metric("Payback", f"{result['payback']} Years")
+        col1.metric(
+            "System Size",
+            f"{result['system_kw']} kW"
+        )
 
-st.markdown("---")
+        col2.metric(
+            "Panels",
+            result["panels"]
+        )
 
-        cost = pd.DataFrame({
+        col3.metric(
+            "Payback",
+            f"{result['payback']} Years"
+        )
 
-            "Category": [
-                "Installation Cost",
-                "Government Subsidy",
-                "Final Cost"
-            ],
 
-            "Amount": [
-                result["installation_cost"],
-                result["subsidy"],
-                result["final_cost"]
-            ]
+        st.markdown("---")
 
-        })
+
+        cost = pd.DataFrame(
+            {
+                "Category":
+                [
+                    "Installation Cost",
+                    "Government Subsidy",
+                    "Final Cost"
+                ],
+
+                "Amount":
+                [
+                    result["installation_cost"],
+                    result["subsidy"],
+                    result["final_cost"]
+                ]
+            }
+        )
+
 
         fig = px.bar(
             cost,
@@ -231,42 +333,34 @@ st.markdown("---")
             title="Cost Analysis"
         )
 
-st.plotly_chart(fig, use_container_width=True)
 
-        savings = pd.DataFrame({
-
-            "Type": [
-                "Monthly Savings",
-                "Yearly Savings"
-            ],
-
-            "Amount": [
-                result["monthly_savings"],
-                result["yearly_savings"]
-            ]
-
-        })
-
-        fig2 = px.pie(
-            savings,
-            names="Type",
-            values="Amount",
-            title="Savings Distribution"
+        st.plotly_chart(
+            fig,
+            use_container_width=True
         )
 
-st.plotly_chart(fig2, use_container_width=True)
+
 
 # ---------------- ABOUT ----------------
 
 else:
 
-st.title("About")
+    st.title(
+        "About"
+    )
 
-st.subheader("AI Solar Sales Assistant")
+    st.subheader(
+        "AI Solar Sales Assistant"
+    )
 
-st.write("Developed by Padmaja Amberkar")
+    st.write(
+        "Developed by Padmaja Amberkar"
+    )
 
-st.write("Built using Python, Streamlit, Plotly and ReportLab")
+    st.write(
+        "Built using Python, Streamlit, Plotly and ReportLab"
+    )
 
-st.info("Version 1.0")
-
+    st.info(
+        "Version 1.0"
+    )
