@@ -36,7 +36,7 @@ page = st.sidebar.radio(
 
 if page == "🏠 Home":
 
-st.markdown("""
+    st.markdown("""
 # ☀️ SunSmart AI
 
 ### Intelligent Solar Recommendation Platform
@@ -161,7 +161,7 @@ st.download_button(
 
         if roof >= result["roof_required"]:
 
-st.success("✅ Roof Area is Sufficient")
+            st.success("✅ Roof Area is Sufficient")
 
         else:
 st.error(
@@ -193,7 +193,7 @@ st.title("📊 Solar Dashboard")
 
     if "result" not in st.session_state:
 
-st.warning("⚠️ Please calculate a recommendation first from the Solar Calculator.")
+         st.warning("⚠️ Please calculate a recommendation first from the Solar Calculator.")
 
     else:
 
