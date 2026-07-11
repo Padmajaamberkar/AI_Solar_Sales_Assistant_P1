@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-from utils.calculator import SolarCalculator
-from utils.pdf_generator import generate_pdf
-from utils.database import save_customer
-from utils.ai_chat import ask_ai
+from calculator import SolarCalculator
+from ai_chat import AIChat
+from pdf_generator import PDFGenerator
+from database import Database
 
 
 # Page Config
